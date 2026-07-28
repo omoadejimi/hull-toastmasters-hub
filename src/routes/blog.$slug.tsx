@@ -41,7 +41,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPost() {
-  const post = Route.useLoaderData();
+  const post = Route.useLoaderData() as Post;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
@@ -62,7 +62,7 @@ function BlogPost() {
         · {post.author} · {post.readingTime}
       </p>
       <div className="mt-8 space-y-5 text-base leading-relaxed">
-        {post.body.map((paragraph) => (
+        {post.body.map((paragraph: string) => (
           <p key={paragraph.slice(0, 24)}>{paragraph}</p>
         ))}
       </div>
