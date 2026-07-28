@@ -1,10 +1,10 @@
 export const CLUB = {
   name: "Hull Toastmasters",
   tagline: "Where Hull finds its voice",
-  email: "hello@hulltoastmasters.org.uk",
+  email: "contact@hullspeakers.org",
   phone: "+44 1482 000 000",
-  venue: "Hull Central Library, Albion Street, Hull HU1 3TF",
-  when: "Every 1st and 3rd Wednesday, 7:00pm – 9:00pm",
+  venue: "Holiday Inn Express 80 Ferensway Hull,  HU2 8LN  United Kingdom",
+  when: "Every 2nd and 4th Thursday, 7:00pm – 9:00pm",
 };
 
 export interface Meeting {
@@ -23,9 +23,6 @@ export const MEETINGS: Meeting[] = [
     date: "2026-08-05",
     title: "Regular club meeting",
     time: "7:00pm – 9:00pm",
-    theme: "Summer stories: speaking with warmth",
-    format: "Hybrid",
-    spaces: 8,
   },
   {
     id: "2026-08-19",
