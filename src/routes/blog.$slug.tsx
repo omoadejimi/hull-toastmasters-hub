@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { POSTS } from "@/data/club";
+import { POSTS, type Post } from "@/data/club";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): Post => {
     const post = POSTS.find((p) => p.slug === params.slug);
     if (!post) throw notFound();
     return post;
