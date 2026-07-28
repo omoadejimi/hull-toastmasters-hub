@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -77,14 +80,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Hull Toastmasters | Public Speaking Club in Hull" },
+      {
+        name: "description",
+        content:
+          "Hull Toastmasters is a friendly public speaking and leadership club meeting twice a month in Hull. Guests always welcome.",
+      },
+      { name: "author", content: "Hull Toastmasters" },
+      { property: "og:site_name", content: "Hull Toastmasters" },
+      { property: "og:title", content: "Hull Toastmasters | Public Speaking Club in Hull" },
+      {
+        property: "og:description",
+        content:
+          "Build confidence in speaking and leadership with Hull Toastmasters. Meetings twice a month, guests always welcome.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -92,6 +103,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Hull Toastmasters",
+          description:
+            "Public speaking and leadership club in Hull, part of Toastmasters International.",
+          email: "hello@hulltoastmasters.org.uk",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Hull Central Library, Albion Street",
+            addressLocality: "Hull",
+            postalCode: "HU1 3TF",
+            addressCountry: "GB",
+          },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -119,8 +156,21 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+      >
+        Skip to main content
+      </a>
+      <div className="flex min-h-dvh flex-col">
+        <SiteHeader />
+        <main id="main" className="flex-1">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </div>
+      <Toaster />
     </QueryClientProvider>
   );
 }
