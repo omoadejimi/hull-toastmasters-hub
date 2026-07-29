@@ -113,7 +113,7 @@ export const POSTS: Post[] = [
     author: "Committee",
     readingTime: "3 min read",
     excerpt:
-      "Eleven learning paths, one flexible programme. Here is how members at our Hull club choose where to start.",
+      "Eleven learning paths, one flexible programme. Here is how members at our Hull Speakers club choose where to start.",
     body: [
       "Pathways is the Toastmasters education programme. You pick a path — such as Dynamic Leadership or Presentation Mastery — and work through projects at your own pace.",
       "Each project pairs a short online module with a live speech at a club meeting, so learning is always tested in front of a real audience.",
