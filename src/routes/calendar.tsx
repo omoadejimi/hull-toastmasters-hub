@@ -19,7 +19,15 @@ export const Route = createFileRoute("/calendar")({
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/calendar" },
     ],
-    links: [{ rel: "canonical", href: "/calendar" }],
+    links: [
+      { rel: "canonical", href: "/calendar" },
+      {
+        rel: "alternate",
+        type: "text/calendar",
+        href: "/calendar.ics",
+        title: `${CLUB.name} meetings`,
+      },
+    ],
     scripts: [
       {
         type: "application/ld+json",
