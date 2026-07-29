@@ -28,7 +28,7 @@ export function SiteHeader() {
           />
           <span className="leading-tight">
             <span className="block text-base font-bold text-primary">Hull Toastmasters</span>
-            <span className="block text-xs text-muted-foreground">Club 1234567 · District 91</span>
+            <span className="block text-xs text-muted-foreground">01333315, 71, Area N21</span>
           </span>
         </Link>
 
