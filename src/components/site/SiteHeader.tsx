@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/toastmasters-logo.svg.asset.json";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -18,12 +19,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link to="/" className="flex items-center gap-3" aria-label="Hull Toastmasters home">
-          <span
-            aria-hidden="true"
-            className="grid size-10 place-items-center rounded-full bg-primary font-bold text-primary-foreground"
-          >
-            HT
-          </span>
+          <img
+            src={logoAsset.url}
+            alt="Toastmasters International"
+            width={434}
+            height={360}
+            className="h-10 w-auto"
+          />
           <span className="leading-tight">
             <span className="block text-base font-bold text-primary">Hull Toastmasters</span>
             <span className="block text-xs text-muted-foreground">Club 1234567 · District 91</span>

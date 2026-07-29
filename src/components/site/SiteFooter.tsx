@@ -1,12 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { CLUB } from "@/data/club";
+import logoAsset from "@/assets/toastmasters-logo.svg.asset.json";
 
 export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-border bg-surface text-surface-foreground">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-3">
         <div>
-          <h2 className="text-lg font-bold text-primary">{CLUB.name}</h2>
+          <img
+            src={logoAsset.url}
+            alt="Toastmasters International"
+            width={434}
+            height={360}
+            className="h-14 w-auto"
+          />
+          <h2 className="mt-3 text-lg font-bold text-primary">{CLUB.name}</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             A member club of Toastmasters International, helping people in Hull and East Yorkshire
             become confident speakers and leaders.
