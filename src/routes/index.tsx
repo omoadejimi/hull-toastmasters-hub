@@ -57,13 +57,7 @@ function Index() {
             <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-5xl">
               Speak and lead with confidence
             </h1>
-            <div className="mt-4 max-w-prose text-base opacity-90 md:text-lg space-y-4">
-              <p>
-                Build confidence in speaking and leadership in a welcoming environment.
-              </p>
-              <p>
-                No experience needed. You're welcome whether you've never spoken in public or want to sharpen existing skills.
-              </p>
+            <div className="mt-4 max-w-prose text-base opacity-90 md:text-lg">
               <p>
                 Hull Toastmasters is a welcoming club where people practise public speaking, run
                 meetings and give each other honest and encouraging feedback. No experience needed.
