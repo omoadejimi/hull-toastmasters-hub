@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { CalendarPlus, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CLUB, MEETINGS } from "@/data/club";
+import { CLUB, getMeetings } from "@/data/club";
 
 const TITLE = "Club Calendar | Hull Toastmasters";
 const DESCRIPTION =
@@ -22,7 +24,7 @@ export const Route = createFileRoute("/calendar")({
       {
         type: "application/ld+json",
         children: JSON.stringify(
-          MEETINGS.map((m) => ({
+          getMeetings().map((m) => ({
             "@context": "https://schema.org",
             "@type": "Event",
             name: `${m.title} — Hull Toastmasters`,
@@ -31,7 +33,7 @@ export const Route = createFileRoute("/calendar")({
               m.format === "Online"
                 ? "https://schema.org/OnlineEventAttendanceMode"
                 : "https://schema.org/OfflineEventAttendanceMode",
-            location: { "@type": "Place", name: CLUB.venue, address: CLUB.venue },
+            location: { "@type": "Place", name: m.location, address: m.location },
             description: m.theme,
             organizer: { "@type": "Organization", name: CLUB.name },
           })),
@@ -42,12 +44,66 @@ export const Route = createFileRoute("/calendar")({
 });
 
 function CalendarPage() {
+  const meetings = useMemo(() => getMeetings(), []);
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
+  const feedUrl = `${origin}/calendar.ics`;
+  const webcalUrl = origin ? feedUrl.replace(/^https?:/, "webcal:") : "";
+  const googleUrl = origin
+    ? `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcalUrl)}`
+    : "";
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-extrabold md:text-4xl">Club calendar</h1>
       <p className="mt-3 max-w-prose text-muted-foreground">
         {CLUB.when}. We meet at {CLUB.venue}. Guests are welcome at every meeting.
       </p>
+
+      <section
+        aria-labelledby="subscribe"
+        className="mt-8 rounded-lg border border-border bg-surface p-5"
+      >
+        <h2 id="subscribe" className="text-lg font-bold">
+          Subscribe to the calendar
+        </h2>
+        <p className="mt-2 max-w-prose text-sm text-muted-foreground">
+          Add our meetings to Apple Calendar, Outlook, Google Calendar or any app that supports
+          iCal. Subscribing keeps your calendar up to date automatically whenever the club schedule
+          changes.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button asChild>
+            <a href={webcalUrl || "/calendar.ics"}>
+              <CalendarPlus aria-hidden="true" />
+              Subscribe in your calendar app
+            </a>
+          </Button>
+          {googleUrl ? (
+            <Button asChild variant="outline">
+              <a href={googleUrl} target="_blank" rel="noreferrer">
+                Add to Google Calendar
+              </a>
+            </Button>
+          ) : null}
+          <Button asChild variant="outline">
+            <a href="/calendar.ics" download="hull-speakers.ics">
+              <Download aria-hidden="true" />
+              Download .ics file
+            </a>
+          </Button>
+        </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          Prefer to paste a link?{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
+            {origin ? feedUrl : "/calendar.ics"}
+          </code>
+        </p>
+      </section>
 
       <div className="mt-8 overflow-x-auto rounded-lg border border-border">
         <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
@@ -72,7 +128,7 @@ function CalendarPage() {
             </tr>
           </thead>
           <tbody>
-            {MEETINGS.map((m) => (
+            {meetings.map((m) => (
               <tr key={m.id} className="border-t border-border align-top">
                 <th scope="row" className="px-4 py-4 font-semibold text-primary">
                   <time dateTime={m.date}>

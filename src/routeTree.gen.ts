@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as MeetingsRouteImport } from './routes/meetings'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CalendarDoticsRouteImport } from './routes/calendar[.]ics'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -30,6 +31,11 @@ const MeetingsRoute = MeetingsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarDoticsRoute = CalendarDoticsRouteImport.update({
+  id: '/calendar.ics',
+  path: '/calendar.ics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -56,6 +62,7 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/calendar.ics': typeof CalendarDoticsRoute
   '/contact': typeof ContactRoute
   '/meetings': typeof MeetingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/calendar.ics': typeof CalendarDoticsRoute
   '/contact': typeof ContactRoute
   '/meetings': typeof MeetingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/calendar': typeof CalendarRoute
+  '/calendar.ics': typeof CalendarDoticsRoute
   '/contact': typeof ContactRoute
   '/meetings': typeof MeetingsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/calendar'
+    | '/calendar.ics'
     | '/contact'
     | '/meetings'
     | '/sitemap.xml'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/calendar'
+    | '/calendar.ics'
     | '/contact'
     | '/meetings'
     | '/sitemap.xml'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/calendar'
+    | '/calendar.ics'
     | '/contact'
     | '/meetings'
     | '/sitemap.xml'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CalendarRoute: typeof CalendarRoute
+  CalendarDoticsRoute: typeof CalendarDoticsRoute
   ContactRoute: typeof ContactRoute
   MeetingsRoute: typeof MeetingsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar.ics': {
+      id: '/calendar.ics'
+      path: '/calendar.ics'
+      fullPath: '/calendar.ics'
+      preLoaderRoute: typeof CalendarDoticsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CalendarRoute: CalendarRoute,
+  CalendarDoticsRoute: CalendarDoticsRoute,
   ContactRoute: ContactRoute,
   MeetingsRoute: MeetingsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
