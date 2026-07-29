@@ -27,7 +27,7 @@ export function SiteHeader() {
             className="h-10 w-auto"
           />
           <span className="leading-tight">
-            <span className="block text-base font-bold text-primary">Hull Toastmasters</span>
+            <span className="block text-base font-bold text-primary">Hull Speakers</span>
             <span className="block text-xs text-muted-foreground">01333315, 71, Area N21</span>
           </span>
         </Link>
