@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CLUB, MEETINGS } from "@/data/club";
+import { CLUB, getMeetings } from "@/data/club";
 
 const TITLE = "Sign Up for a Meeting | Hull Toastmasters";
 const DESCRIPTION =
@@ -45,7 +45,8 @@ function formatDate(date: string) {
 }
 
 function MeetingsPage() {
-  const [selected, setSelected] = useState(MEETINGS[0].id);
+  const meetings = useMemo(() => getMeetings(), []);
+  const [selected, setSelected] = useState(meetings[0]?.id ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -63,7 +64,7 @@ function MeetingsPage() {
     }
 
     setErrors({});
-    const meeting = MEETINGS.find((m) => m.id === selected)!;
+    const meeting = meetings.find((m) => m.id === selected)!;
     const subject = encodeURIComponent(`Guest place: ${meeting.title} on ${formatDate(meeting.date)}`);
     const body = encodeURIComponent(
       `Name: ${result.data.name}\nEmail: ${result.data.email}\nMeeting: ${meeting.title} — ${formatDate(meeting.date)} (${meeting.time})\n\n${result.data.notes ?? ""}`,
@@ -87,7 +88,7 @@ function MeetingsPage() {
             Choose a date
           </h2>
           <ul className="mt-4 space-y-3">
-            {MEETINGS.map((m) => {
+            {meetings.map((m) => {
               const isSelected = selected === m.id;
               return (
                 <li key={m.id}>
@@ -174,7 +175,7 @@ function MeetingsPage() {
                   />
                 </div>
                 <p className="text-sm text-muted-foreground" aria-live="polite">
-                  Selected: {formatDate(MEETINGS.find((m) => m.id === selected)!.date)}
+                  Selected: {formatDate(meetings.find((m) => m.id === selected)?.date ?? "")}
                 </p>
                 <Button type="submit" size="lg" className="w-full">
                   Request my guest place

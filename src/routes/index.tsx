@@ -3,7 +3,7 @@ import { CalendarDays, MapPin, MessageSquare, Users } from "lucide-react";
 import heroImage from "@/assets/hero-speaking.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CLUB, MEETINGS, POSTS } from "@/data/club";
+import { CLUB, getMeetings, POSTS } from "@/data/club";
 
 const TITLE = "Hull Toastmasters | Friendly Public Speaking Club in Hull";
 const DESCRIPTION =
@@ -43,7 +43,7 @@ const BENEFITS = [
 ];
 
 function Index() {
-  const nextMeetings = MEETINGS.slice(0, 3);
+  const nextMeetings = getMeetings().slice(0, 3);
   const latestPosts = POSTS.slice(0, 2);
 
   return (
