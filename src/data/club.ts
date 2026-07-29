@@ -4,7 +4,7 @@ export const CLUB = {
   email: "contact@hullspeakers.org",
   phone: "+44 1482 000 000",
   venue: "Holiday Inn Express 80 Ferensway Hull,  HU2 8LN  United Kingdom",
-  when: "Every 2nd and 4th Thursday, 7:00pm – 9:00pm",
+  when: "Every 2nd and 4th Thursday, 7:00 pm to 9:00 pm",
 };
 
 export interface Meeting {
