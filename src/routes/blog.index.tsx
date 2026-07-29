@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { POSTS } from "@/data/club";
 
-const TITLE = "Blog | Hull Toastmasters";
+const TITLE = "Blog | Hull Speakers";
 const DESCRIPTION =
-  "Practical articles from Hull Toastmasters members on public speaking, beating nerves, leadership and the Toastmasters Pathways programme.";
+  "Practical articles from Hull Speakers members on public speaking, beating nerves, leadership and the Toastmasters Pathways programme.";
 
 export const Route = createFileRoute("/blog/")({
   component: BlogIndex,
@@ -26,7 +26,7 @@ function BlogIndex() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <h1 className="text-3xl font-extrabold md:text-4xl">Club blog</h1>
       <p className="mt-3 max-w-prose text-muted-foreground">
-        Speaking tips, member stories and news from Hull Toastmasters.
+        Read speaking tips, member stories, and news from Hull Speakers.
       </p>
       <ul className="mt-10 space-y-6">
         {POSTS.map((p) => (
