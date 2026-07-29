@@ -23,6 +23,9 @@ export const MEETINGS: Meeting[] = [
     date: "2026-08-05",
     title: "Regular club meeting",
     time: "7:00pm – 9:00pm",
+    theme: "Speak up, stand out",
+    format: "In person",
+    spaces: 10,
   },
   {
     id: "2026-08-19",
