@@ -1,10 +1,10 @@
 export const CLUB = {
-  name: "Hull Toastmasters",
+  name: "Hull Speakers",
   tagline: "",
   email: "contact@hullspeakers.org",
   phone: "+44 1482 000 000",
   venue: "Holiday Inn Express, 80 Ferensway Hull, HU2 8LN,\u00a0 United Kingdom",
-  when: "Every 2nd and 4th Thursday, 7:00 pm to 9:00 pm",
+  when: "Every 2nd and 4th Tuesday, 7:00 pm to 9:00 pm",
 };
 
 export interface Meeting {
@@ -78,14 +78,14 @@ export interface Post {
 export const POSTS: Post[] = [
   {
     slug: "first-visit-what-to-expect",
-    title: "Your first visit to Hull Toastmasters: what to expect",
+    title: "Your first visit to Hull Speakers: what to expect",
     date: "2026-07-14",
     author: "Priya Nair",
     readingTime: "4 min read",
     excerpt:
       "Nervous about walking through the door? Here is exactly how a club evening runs, from the welcome desk to the closing round of applause.",
     body: [
-      "Guests are welcome at every Hull Toastmasters meeting, and you never have to speak on your first night. A member meets you at the door, introduces you to a few people and finds you a seat with a good view of the lectern.",
+      "Guests are welcome at every Hull Speakers meeting, and you never have to speak on your first night. A member meets you at the door, introduces you to a few people and finds you a seat with a good view of the lectern.",
       "A meeting has three parts. Prepared speeches come first: members deliver projects from the Toastmasters Pathways learning programme, usually five to seven minutes each. Table Topics follows, a fast round of one-to-two minute impromptu answers. Finally, evaluators give warm, specific feedback on everything they heard.",
       "The evening ends around 9pm and most of us head for a drink nearby. Bring nothing but curiosity — and if you would like to try Table Topics, just tell the Topicsmaster before we start.",
     ],
@@ -113,7 +113,7 @@ export const POSTS: Post[] = [
     author: "Committee",
     readingTime: "3 min read",
     excerpt:
-      "Eleven learning paths, one flexible programme. Here is how members at our Hull club choose where to start.",
+      "Eleven learning paths, one flexible programme. Here is how members at our Hull Speakers club choose where to start.",
     body: [
       "Pathways is the Toastmasters education programme. You pick a path — such as Dynamic Leadership or Presentation Mastery — and work through projects at your own pace.",
       "Each project pairs a short online module with a live speech at a club meeting, so learning is always tested in front of a real audience.",
