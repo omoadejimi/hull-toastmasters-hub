@@ -63,10 +63,10 @@ function ContactPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-extrabold md:text-4xl">Contact the club</h1>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Contact us</h1>
       <p className="mt-3 max-w-prose text-muted-foreground">
-        Questions about visiting, membership or accessibility? Send us a message and a committee
-        member will get back to you.
+        Have questions about visiting, membership, or accessibility? Send us a message and a
+        committee member will get back to you.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1fr]">
