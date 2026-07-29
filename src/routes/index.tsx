@@ -38,7 +38,7 @@ const BENEFITS = [
   {
     icon: CalendarDays,
     title: "Learn at your own pace",
-    text: "The Toastmasters Pathways programme lets you choose a learning path and progress project by project.",
+    text: "Toastmasters' Pathways learning programme helps you develop communication and leadership skills through practical projects at your own pace.",
   },
 ];
 
@@ -55,12 +55,20 @@ function Index() {
               {CLUB.tagline}
             </p>
             <h1 className="mt-3 text-4xl font-extrabold leading-tight md:text-5xl">
-              Become the speaker and leader you want to be
+              Speak and lead with confidence
             </h1>
-            <p className="mt-4 max-w-prose text-base opacity-90 md:text-lg">
-              Hull Toastmasters is a welcoming club where people practise public speaking, run
-              meetings and give each other honest, encouraging feedback. No experience needed.
-            </p>
+            <div className="mt-4 max-w-prose text-base opacity-90 md:text-lg space-y-4">
+              <p>
+                Build confidence in speaking and leadership in a welcoming environment.
+              </p>
+              <p>
+                No experience needed. You're welcome whether you've never spoken in public or want to sharpen existing skills.
+              </p>
+              <p>
+                Hull Toastmasters is a welcoming club where people practise public speaking, run
+                meetings and give each other honest and encouraging feedback. No experience needed.
+              </p>
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" variant="secondary">
                 <Link to="/meetings">Sign up for a meeting</Link>
@@ -71,7 +79,7 @@ function Index() {
                 variant="outline"
                 className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
               >
-                <Link to="/calendar">See the club calendar</Link>
+                <Link to="/calendar">View upcoming meetings</Link>
               </Button>
             </div>
             <p className="mt-6 flex items-center gap-2 text-sm opacity-90">
@@ -91,7 +99,7 @@ function Index() {
 
       <section aria-labelledby="benefits" className="mx-auto max-w-6xl px-4 py-16">
         <h2 id="benefits" className="text-2xl font-bold md:text-3xl">
-          What you get from a club evening
+          What you'll get from joining our meetings
         </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {BENEFITS.map(({ icon: Icon, title, text }) => (
@@ -110,7 +118,7 @@ function Index() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <h2 id="next-meetings" className="text-2xl font-bold md:text-3xl">
-              Next meetings
+              Upcoming meetings
             </h2>
             <Link to="/calendar" className="text-sm font-semibold text-primary hover:underline">
               View full calendar

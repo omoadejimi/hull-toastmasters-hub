@@ -1,9 +1,9 @@
 export const CLUB = {
   name: "Hull Toastmasters",
-  tagline: "Where Hull finds its voice",
+  tagline: "",
   email: "contact@hullspeakers.org",
   phone: "+44 1482 000 000",
-  venue: "Holiday Inn Express 80 Ferensway Hull,  HU2 8LN  United Kingdom",
+  venue: "Holiday Inn Express, 80 Ferensway Hull, HU2 8LN,\u00a0 United Kingdom",
   when: "Every 2nd and 4th Thursday, 7:00 pm to 9:00 pm",
 };
 
