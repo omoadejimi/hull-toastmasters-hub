@@ -3,7 +3,7 @@ import { CalendarDays, MapPin, MessageSquare, Users } from "lucide-react";
 import heroImage from "@/assets/hero-speaking.jpg";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CLUB, getMeetings, POSTS } from "@/data/club";
+import { CLUB, getMeetings } from "@/data/club";
 
 const TITLE = "Hull Toastmasters | Friendly Public Speaking Club in Hull";
 const DESCRIPTION =
@@ -44,7 +44,6 @@ const BENEFITS = [
 
 function Index() {
   const nextMeetings = getMeetings().slice(0, 3);
-  const latestPosts = POSTS.slice(0, 2);
 
   return (
     <>
@@ -147,46 +146,6 @@ function Index() {
         </div>
       </section>
 
-      <section aria-labelledby="latest-posts" className="mx-auto max-w-6xl px-4 py-16">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 id="latest-posts" className="text-2xl font-bold md:text-3xl">
-            From the club blog
-          </h2>
-          <Link to="/blog" className="text-sm font-semibold text-primary hover:underline">
-            Read all posts
-          </Link>
-        </div>
-        <ul className="mt-8 grid gap-6 md:grid-cols-2">
-          {latestPosts.map((p) => (
-            <li key={p.slug}>
-              <Card className="h-full card-elevated">
-                <CardHeader>
-                  <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                    <time dateTime={p.date}>
-                      {new Date(p.date).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </time>{" "}
-                    · {p.readingTime}
-                  </p>
-                  <CardTitle className="text-lg">
-                    <Link
-                      to="/blog/$slug"
-                      params={{ slug: p.slug }}
-                      className="hover:text-primary hover:underline"
-                    >
-                      {p.title}
-                    </Link>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">{p.excerpt}</CardContent>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </section>
     </>
   );
 }
