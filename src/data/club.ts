@@ -62,8 +62,8 @@ export const MEETING_OVERRIDES: Record<
     spaces: 5,
   },
   "2026-10-13": {
-    title: "Open evening for guests",
-    theme: "Bring a friend, try Table Topics",
+    title: "",
+    theme: "",
     start: "18:45",
     spaces: 20,
   },
