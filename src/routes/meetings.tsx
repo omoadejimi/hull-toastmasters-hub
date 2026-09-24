@@ -105,9 +105,8 @@ function MeetingsPage() {
                     <span className="block text-sm font-semibold text-secondary">
                       <time dateTime={m.date}>{formatDate(m.date)}</time>
                     </span>
-                    <span className="mt-1 block font-bold">{m.title}</span>
-                    <span className="mt-1 block text-sm text-muted-foreground">
-                      {m.theme} · {m.time} · {m.format} · {m.spaces} guest places left
+                    <span className="mt-1 block text-sm">
+                      {m.time} · {m.format}
                       {isSelected ? " · selected" : ""}
                     </span>
                   </button>
