@@ -147,8 +147,8 @@ function CalendarPage() {
                   </time>
                 </th>
                 <td className="px-4 py-4">
-                  <span className="block font-semibold">{""}</span>
-                  <span className="text-muted-foreground">{""}</span>
+                  <span className="block font-semibold">{m.title}</span>
+                  <span className="text-muted-foreground">{m.theme}</span>
                 </td>
                 <td className="px-4 py-4">{m.time}</td>
                 <td className="px-4 py-4">{m.format}</td>
