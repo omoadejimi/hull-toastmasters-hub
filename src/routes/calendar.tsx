@@ -112,7 +112,7 @@ function CalendarPage() {
       </section>
 
       <div className="mt-8 overflow-x-auto rounded-lg border border-border">
-        <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
+        <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
           <caption className="sr-only">Upcoming Hull Toastmasters meetings</caption>
           <thead className="bg-surface">
             <tr>
@@ -120,16 +120,10 @@ function CalendarPage() {
                 Date
               </th>
               <th scope="col" className="px-4 py-3 font-bold">
-                {"\n"}
-              </th>
-              <th scope="col" className="px-4 py-3 font-bold">
                 Time
               </th>
               <th scope="col" className="px-4 py-3 font-bold">
                 Format
-              </th>
-              <th scope="col" className="px-4 py-3 font-bold">
-                {"\n"}
               </th>
             </tr>
           </thead>
@@ -146,13 +140,8 @@ function CalendarPage() {
                     })}
                   </time>
                 </th>
-                <td className="px-4 py-4">
-                  <span className="block font-semibold">{m.title}</span>
-                  <span className="text-muted-foreground">{m.theme}</span>
-                </td>
                 <td className="px-4 py-4">{m.time}</td>
                 <td className="px-4 py-4">{m.format}</td>
-                <td className="px-4 py-4">{"\n"}</td>
               </tr>
             ))}
           </tbody>
