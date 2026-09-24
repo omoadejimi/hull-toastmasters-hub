@@ -106,10 +106,8 @@ function CalendarPage() {
           </Button>
         </div>
         <p className="mt-4 text-sm text-muted-foreground">
-          Prefer to paste a link?{" "}
-          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
-            {origin ? feedUrl : "/calendar.ics"}
-          </code>
+          {"\n"}
+          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{""}</code>
         </p>
       </section>
 
@@ -122,7 +120,7 @@ function CalendarPage() {
                 Date
               </th>
               <th scope="col" className="px-4 py-3 font-bold">
-                Meeting
+                {"\n"}
               </th>
               <th scope="col" className="px-4 py-3 font-bold">
                 Time
@@ -131,7 +129,7 @@ function CalendarPage() {
                 Format
               </th>
               <th scope="col" className="px-4 py-3 font-bold">
-                Guest places
+                {"\n"}
               </th>
             </tr>
           </thead>
@@ -154,7 +152,7 @@ function CalendarPage() {
                 </td>
                 <td className="px-4 py-4">{m.time}</td>
                 <td className="px-4 py-4">{m.format}</td>
-                <td className="px-4 py-4">{m.spaces}</td>
+                <td className="px-4 py-4">{"\n"}</td>
               </tr>
             ))}
           </tbody>
