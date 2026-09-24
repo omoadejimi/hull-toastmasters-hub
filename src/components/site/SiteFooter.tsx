@@ -34,11 +34,6 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link to="/blog" className="hover:underline">
-                Blog
-              </Link>
-            </li>
-            <li>
               <Link to="/contact" className="hover:underline">
                 Contact the club
               </Link>
