@@ -77,7 +77,7 @@ export const EXTRA_MEETINGS: Array<
     date: "2026-11-04",
     title: "Pathways workshop (online)",
     theme: "Choose your learning path",
-    format: "Online",
+    format: "In person",
     spaces: 30,
     location: "Online — joining link sent on registration",
   },
