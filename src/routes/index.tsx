@@ -128,16 +128,15 @@ function Index() {
                           weekday: "long",
                           day: "numeric",
                           month: "long",
+                          year: "numeric",
                         })}
                       </time>
                     </p>
-                    <CardTitle className="text-lg">{m.title}</CardTitle>
+                    <CardTitle className="text-lg">Regular club meeting</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-2 text-sm text-muted-foreground">
-                    <p>{m.theme}</p>
-                    <p>
-                      {m.time} · {m.format}
-                    </p>
+                  <CardContent className="space-y-1 text-sm text-muted-foreground">
+                    <p>{m.time}</p>
+                    <p>{m.format}</p>
                   </CardContent>
                 </Card>
               </li>
