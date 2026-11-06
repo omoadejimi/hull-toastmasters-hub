@@ -9,3 +9,4 @@
 - Do not rewrite published Git history. Use reviewable commits and a draft pull request.
 - Do not merge or deploy without the owner's explicit approval.
 - Preserve Toastmasters trademarks, authorised logo artwork and third-party licence notices.
+- Keep Nitro's public build files in `dist/` and its server at `dist/server/` because publishing reads `dist/`.

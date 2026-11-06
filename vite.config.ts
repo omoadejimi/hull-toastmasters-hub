@@ -5,6 +5,11 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [tailwindcss(), tanstackStart({ server: { entry: "server" } }), nitro(), react()],
+  plugins: [
+    tailwindcss(),
+    tanstackStart({ server: { entry: "server" } }),
+    nitro({ output: { dir: "dist", publicDir: "dist", serverDir: "dist/server" } }),
+    react(),
+  ],
   resolve: { tsconfigPaths: true, dedupe: ["react", "react-dom", "@tanstack/react-router"] },
 });

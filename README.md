@@ -42,7 +42,7 @@ npm run build
 npm start
 ```
 
-Nitro produces `.output/public` and `.output/server/index.mjs`. The standard Node server reads `PORT` (default 3000). The custom SSR entry, HTML error page, route boundaries and server-function CSRF protection are retained. Select another supported Nitro target with `NITRO_PRESET` when building; provider-specific deployment still needs validation. No deployment is performed by this repository's scripts.
+Nitro produces the public website files in `dist/` and the server in `dist/server/index.mjs`. The standard Node server reads `PORT` (default 3000). The custom SSR entry, HTML error page, route boundaries and server-function CSRF protection are retained. Select another supported Nitro target with `NITRO_PRESET` when building; provider-specific deployment still needs validation. No deployment is performed by this repository's scripts.
 
 Set `VITE_SITE_URL` to the final public origin **before building** to enable absolute canonical and sharing URLs, for example by configuring it in the hosting dashboard. Canonical/share URL tags are omitted when no valid origin is set. The sitemap uses the request origin; the reverse proxy must supply the intended public request URL. No public domain is assumed.
 
