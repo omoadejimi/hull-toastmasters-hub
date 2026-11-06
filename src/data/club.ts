@@ -2,8 +2,7 @@ export const CLUB = {
   name: "Hull Speakers",
   tagline: "",
   email: "contact@hullspeakers.org",
-  phone: "+44 1482 000 000",
-  venue: "Holiday Inn Express, 80 Ferensway Hull, HU2 8LN,\u00a0 United Kingdom",
+  venue: "Holiday Inn Express, 80 Ferensway, Hull HU2 8LN",
   when: "Every 2nd and 4th Tuesday at 7pm",
 };
 
@@ -62,26 +61,57 @@ export const MEETING_OVERRIDES: Record<
     spaces: 5,
   },
   "2026-10-13": {
-    title: "",
-    theme: "",
     start: "18:45",
     spaces: 20,
   },
 };
 
 /** Extra one-off events that are not part of the regular schedule. */
-export const EXTRA_MEETINGS: Array<
-  Partial<Omit<Meeting, "id" | "time">> & { date: string }
-> = [
+export const EXTRA_MEETINGS: Array<Partial<Omit<Meeting, "id" | "time">> & { date: string }> = [
   {
     date: "2026-11-04",
     title: "Pathways workshop (online)",
     theme: "Choose your learning path",
-    format: "In person",
+    format: "Online",
     spaces: 30,
     location: "Online — joining link sent on registration",
   },
 ];
+
+export const CLUB_TIME_ZONE = "Europe/London";
+
+/** Keep SSR and browser labels identical across ICU versions and time zones. */
+export function formatMeetingDate(date: string) {
+  const value = new Date(`${date}T00:00:00Z`);
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return `${weekdays[value.getUTCDay()]}, ${value.getUTCDate()} ${months[value.getUTCMonth()]} ${value.getUTCFullYear()}`;
+}
+
+/** Include the UK offset for machine-readable evening meeting times. */
+export function meetingDateTime(date: string, time: string) {
+  const offset =
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: CLUB_TIME_ZONE,
+      timeZoneName: "longOffset",
+    })
+      .formatToParts(new Date(`${date}T${time}:00Z`))
+      .find((part) => part.type === "timeZoneName")?.value ?? "GMT";
+  return `${date}T${time}:00${offset === "GMT" ? "+00:00" : offset.replace("GMT", "")}`;
+}
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
@@ -115,13 +145,24 @@ export function formatTimeRange(start: string, end: string) {
  * Called lazily so it always reflects "today".
  */
 export function getMeetings(from: Date = new Date()): Meeting[] {
-  const today = isoDate(from.getFullYear(), from.getMonth(), from.getDate());
+  // Use the club's date at the same instant on both the SSR server and client.
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: CLUB_TIME_ZONE,
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).formatToParts(from);
+  const value = (type: Intl.DateTimeFormatPartTypes) =>
+    Number(parts.find((part) => part.type === type)?.value);
+  const year = value("year");
+  const month = value("month") - 1;
+  const today = isoDate(year, month, value("day"));
   const dates = new Set<string>();
 
   for (let i = 0; i <= SCHEDULE.monthsAhead; i++) {
-    const cursor = new Date(from.getFullYear(), from.getMonth() + i, 1);
+    const cursor = new Date(Date.UTC(year, month + i, 1));
     for (const nth of SCHEDULE.weeksOfMonth) {
-      const date = nthWeekday(cursor.getFullYear(), cursor.getMonth(), SCHEDULE.weekday, nth);
+      const date = nthWeekday(cursor.getUTCFullYear(), cursor.getUTCMonth(), SCHEDULE.weekday, nth);
       if (date) dates.add(date);
     }
   }

@@ -1,6 +1,6 @@
-import type { Meeting } from "@/data/club";
+import { CLUB_TIME_ZONE, type Meeting } from "@/data/club";
 
-const TZID = "Europe/London";
+const TZID = CLUB_TIME_ZONE;
 
 const VTIMEZONE = [
   "BEGIN:VTIMEZONE",
@@ -27,19 +27,26 @@ function escapeText(value: string) {
     .replace(/\\/g, "\\\\")
     .replace(/;/g, "\\;")
     .replace(/,/g, "\\,")
-    .replace(/\r?\n/g, "\\n");
+    .replace(/\r\n?|\n/g, "\\n");
 }
 
-/** RFC 5545 requires lines of 75 octets or fewer. */
+/** RFC 5545: fold at 75 UTF-8 octets without splitting a code point. */
 function fold(line: string) {
-  if (line.length <= 75) return line;
-  const parts: string[] = [line.slice(0, 75)];
-  let rest = line.slice(75);
-  while (rest.length > 74) {
-    parts.push(` ${rest.slice(0, 74)}`);
-    rest = rest.slice(74);
+  const encoder = new TextEncoder();
+  const parts: string[] = [];
+  let current = "";
+  let bytes = 0;
+  for (const character of line) {
+    const size = encoder.encode(character).length;
+    if (bytes + size > 75) {
+      parts.push(current);
+      current = " ";
+      bytes = 1;
+    }
+    current += character;
+    bytes += size;
   }
-  if (rest) parts.push(` ${rest}`);
+  parts.push(current);
   return parts.join("\r\n");
 }
 
@@ -62,7 +69,7 @@ export function buildIcs(options: {
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    `PRODID:-//${options.calendarName}//Club Calendar//EN`,
+    `PRODID:-//${escapeText(options.calendarName)}//Club Calendar//EN`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${escapeText(options.calendarName)}`,

@@ -1,12 +1,12 @@
+import { canonicalLinks, socialMeta } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { CalendarPlus, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CLUB, getMeetings } from "@/data/club";
+import { CLUB, formatMeetingDate, getMeetings, meetingDateTime } from "@/data/club";
 
-const TITLE = "Club Calendar | Hull Toastmasters";
-const DESCRIPTION =
-  "See every upcoming Hull Toastmasters meeting, contest and workshop, with dates, times, themes and whether the evening is in person, hybrid or online.";
+const TITLE = `Club calendar | ${CLUB.name}`;
+const DESCRIPTION = `See upcoming ${CLUB.name} meetings, with dates, UK times, themes and locations. Guests are welcome to ask about attending.`;
 
 export const Route = createFileRoute("/calendar")({
   component: CalendarPage,
@@ -17,10 +17,10 @@ export const Route = createFileRoute("/calendar")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/calendar" },
+      ...socialMeta("/calendar"),
     ],
     links: [
-      { rel: "canonical", href: "/calendar" },
+      ...canonicalLinks("/calendar"),
       {
         rel: "alternate",
         type: "text/calendar",
@@ -32,18 +32,23 @@ export const Route = createFileRoute("/calendar")({
       {
         type: "application/ld+json",
         children: JSON.stringify(
-          getMeetings().map((m) => ({
+          getMeetings().map((meeting) => ({
             "@context": "https://schema.org",
             "@type": "Event",
-            name: `${m.title} — Hull Toastmasters`,
-            startDate: m.date,
+            name: `${meeting.title} — ${CLUB.name}`,
+            startDate: meetingDateTime(meeting.date, meeting.start),
+            endDate: meetingDateTime(meeting.date, meeting.end),
             eventAttendanceMode:
-              m.format === "Online"
+              meeting.format === "Online"
                 ? "https://schema.org/OnlineEventAttendanceMode"
-                : "https://schema.org/OfflineEventAttendanceMode",
-            location: { "@type": "Place", name: m.location, address: m.location },
-            description: m.theme,
-            organizer: { "@type": "Organization", name: CLUB.name },
+                : meeting.format === "Hybrid"
+                  ? "https://schema.org/MixedEventAttendanceMode"
+                  : "https://schema.org/OfflineEventAttendanceMode",
+            ...(meeting.format !== "Online" && {
+              location: { "@type": "Place", name: meeting.location, address: meeting.location },
+            }),
+            description: meeting.theme,
+            organizer: { "@type": "Organization", name: CLUB.name, email: CLUB.email },
           })),
         ),
       },
@@ -69,7 +74,8 @@ function CalendarPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-extrabold md:text-4xl">Club calendar</h1>
       <p className="mt-3 max-w-prose text-muted-foreground">
-        {CLUB.when}. We meet at {CLUB.venue}. Guests are welcome at every meeting.
+        {CLUB.when}. We meet at {CLUB.venue}. Guests are welcome. All times are UK local time (GMT
+        or BST).
       </p>
 
       <section
@@ -77,28 +83,36 @@ function CalendarPage() {
         className="mt-8 rounded-lg border border-border bg-surface p-5"
       >
         <h2 id="subscribe" className="text-lg font-bold">
-          Subscribe to the calendar
+          Add meetings to your calendar
         </h2>
         <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-          Add our meetings to Apple Calendar, Outlook, Google Calendar or any app that supports
-          iCal. Subscribing keeps your calendar up to date automatically whenever the club schedule
-          changes.
+          Subscribe in Apple Calendar, Outlook, Google Calendar or another app that supports iCal.
+          Your app checks for updates periodically. A downloaded file is a one-time copy and will
+          not update automatically.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <Button asChild>
+          <Button asChild className="h-auto min-h-11 max-w-full whitespace-normal py-3 text-center">
             <a href={webcalUrl || "/calendar.ics"}>
               <CalendarPlus aria-hidden="true" />
               Subscribe in your calendar app
             </a>
           </Button>
           {googleUrl ? (
-            <Button asChild variant="outline">
+            <Button
+              asChild
+              variant="outline"
+              className="h-auto min-h-11 max-w-full whitespace-normal py-3 text-center"
+            >
               <a href={googleUrl} target="_blank" rel="noreferrer">
-                Add to Google Calendar
+                Add to Google Calendar (opens a new tab)
               </a>
             </Button>
           ) : null}
-          <Button asChild variant="outline">
+          <Button
+            asChild
+            variant="outline"
+            className="h-auto min-h-11 max-w-full whitespace-normal py-3 text-center"
+          >
             <a href="/calendar.ics" download="hull-speakers.ics">
               <Download aria-hidden="true" />
               Download .ics file
@@ -106,51 +120,60 @@ function CalendarPage() {
           </Button>
         </div>
         <p className="mt-4 text-sm text-muted-foreground">
-          {"\n"}
-          <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{""}</code>
+          If your calendar app does not open, copy this feed address into its subscription settings:{" "}
+          <a
+            href="/calendar.ics"
+            className="break-all font-medium text-primary underline underline-offset-4"
+          >
+            {feedUrl}
+          </a>
         </p>
       </section>
 
-      <div className="mt-8 overflow-x-auto rounded-lg border border-border">
-        <table className="w-full min-w-[36rem] border-collapse text-left text-sm">
-          <caption className="sr-only">Upcoming Hull Toastmasters meetings</caption>
-          <thead className="bg-surface">
-            <tr>
-              <th scope="col" className="px-4 py-3 font-bold">
-                Date
-              </th>
-              <th scope="col" className="px-4 py-3 font-bold">
-                Time
-              </th>
-              <th scope="col" className="px-4 py-3 font-bold">
-                Format
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {meetings.map((m) => (
-              <tr key={m.id} className="border-t border-border align-top">
-                <th scope="row" className="px-4 py-4 font-semibold text-primary">
-                  <time dateTime={m.date}>
-                    {new Date(m.date).toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </time>
-                </th>
-                <td className="px-4 py-4">{m.time}</td>
-                <td className="px-4 py-4">{m.format}</td>
-              </tr>
+      <section aria-labelledby="upcoming-meetings" className="mt-10">
+        <h2 id="upcoming-meetings" className="text-2xl font-bold">
+          Upcoming meetings
+        </h2>
+        {meetings.length > 0 ? (
+          <ul className="mt-5 grid gap-4 md:grid-cols-2">
+            {meetings.map((meeting) => (
+              <li key={meeting.id} className="min-w-0 rounded-lg border border-border p-5">
+                <p className="font-semibold text-primary">
+                  <time dateTime={meeting.date}>{formatMeetingDate(meeting.date)}</time>
+                </p>
+                <h3 className="mt-2 text-lg font-bold">{meeting.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{meeting.theme}</p>
+                <dl className="mt-4 space-y-2 text-sm">
+                  <div>
+                    <dt className="font-semibold">Time (UK)</dt>
+                    <dd>{meeting.time}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Format</dt>
+                    <dd>{meeting.format}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold">Location</dt>
+                    <dd>{meeting.location}</dd>
+                  </div>
+                </dl>
+              </li>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </ul>
+        ) : (
+          <p className="mt-4 text-muted-foreground">
+            No meetings are listed yet. Contact us for the next meeting date.
+          </p>
+        )}
+      </section>
 
       <div className="mt-8">
-        <Button asChild size="lg">
-          <Link to="/meetings">Sign up for a meeting</Link>
+        <Button
+          asChild
+          size="lg"
+          className="h-auto min-h-11 max-w-full whitespace-normal py-3 text-center"
+        >
+          <Link to="/meetings">Ask to attend a meeting</Link>
         </Button>
       </div>
     </div>

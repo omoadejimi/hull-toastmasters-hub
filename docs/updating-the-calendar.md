@@ -1,66 +1,89 @@
 # Updating the club calendar
 
-Everything lives in one file: `src/data/club.ts`. Edit it, save, and the
-website, the JSON-LD event data for Google, and the iCal feed at
-`/calendar.ics` all update together.
+Club details and meetings live in `src/data/club.ts`. Changes update the website,
+calendar event metadata and the iCal feed at `/calendar.ics`. Check the production
+build before publishing a schedule change.
 
-## 1. Regular meetings happen automatically
+## Regular meetings
 
-The `SCHEDULE` block generates every regular meeting, so you never have to add
-dates by hand and old meetings disappear on their own.
+`SCHEDULE` generates the second and fourth Tuesday of each month, from the
+current UK calendar day through the configured number of months ahead. Dates
+are selected in `Europe/London`, regardless of the server or visitor's time zone.
 
 ```ts
 export const SCHEDULE = {
-  weekday: 2,          // 0 = Sunday, 1 = Monday, 2 = Tuesday ...
-  weeksOfMonth: [2, 4],// 2nd and 4th Tuesday of each month
-  start: "19:00",      // 24-hour clock
+  weekday: 2, // 0 = Sunday, 1 = Monday, 2 = Tuesday ...
+  weeksOfMonth: [2, 4],
+  start: "19:00", // UK local time; the feed handles GMT and BST
   end: "21:00",
   title: "Regular club meeting",
   theme: "Prepared speeches, Table Topics and evaluations",
   format: "In person", // "In person" | "Hybrid" | "Online"
-  spaces: 12,          // guest places advertised
-  monthsAhead: 8,      // how far ahead to publish
+  spaces: 12, // editorial estimate, not live availability
+  monthsAhead: 8,
 };
 ```
 
-Moved to the 1st and 3rd Monday? Set `weekday: 1` and `weeksOfMonth: [1, 3]`.
+To move to the first and third Monday, set `weekday: 1` and
+`weeksOfMonth: [1, 3]`. Confirm holiday and venue exceptions before publishing.
+The calendar keeps today's meeting listed until midnight UK time.
 
-## 2. Change or cancel a single date
+## Change or cancel a date
 
-Add an entry to `MEETING_OVERRIDES`, keyed by the date (`YYYY-MM-DD`):
+Add an entry to `MEETING_OVERRIDES`, keyed by `YYYY-MM-DD`. Omit title and theme
+when they should keep the regular defaults; do not set them to empty strings.
 
 ```ts
 export const MEETING_OVERRIDES = {
-  "2026-12-22": { cancelled: true },                       // no meeting
-  "2026-09-22": { title: "Contest heats", spaces: 5 },     // special evening
+  "2026-12-22": { cancelled: true },
+  "2027-01-12": { title: "Contest heats", end: "21:15" },
 };
 ```
 
-## 3. Add a one-off event
+Cancellation removes a meeting from the website and feed. Calendar apps control
+refresh intervals and may retain removed events. Confirm significant changes
+with attendees directly; do not rely on a calendar subscription as the only
+notification channel.
 
-Add it to `EXTRA_MEETINGS`:
+## Add a one-off event
+
+Add a dated entry to `EXTRA_MEETINGS`. Use matching format and location details.
+Only advertise a joining-link process that the club can fulfil.
 
 ```ts
 export const EXTRA_MEETINGS = [
   {
-    date: "2026-11-04",
+    date: "2027-01-20",
     title: "Pathways workshop (online)",
     theme: "Choose your learning path",
     format: "Online",
-    spaces: 30,
-    location: "Online — joining link sent on registration",
+    location: "Online — contact the club for joining details",
   },
 ];
 ```
 
-## 4. Club details
+## Club details
 
-Name, email, venue and the "when" sentence shown in the header, footer and
-calendar feed are in the `CLUB` object at the top of the same file.
+The `CLUB` object is the source for the name, contact address, venue and regular
+meeting description. The club owner confirmed these details for this audit:
 
-## The iCal feed
+- Hull Speakers
+- Holiday Inn Express, 80 Ferensway, Hull HU2 8LN
+- contact@hullspeakers.org
 
-- Feed URL: `https://your-domain/calendar.ics`
-- Subscribe URL (one-click in Apple Calendar / Outlook): `webcal://your-domain/calendar.ics`
-- Calendar apps re-check roughly every 12 hours, so anything you change here
-  reaches subscribers without them doing anything.
+The previous Hull Central Library address and alternative email were inconsistent
+with these confirmed details. Keep every page and metadata entry aligned with
+`CLUB` when details change. The contact and attendance forms prepare email drafts;
+they do not submit to a booking or delivery service, and guest capacity is not
+live inventory.
+
+## Calendar feed and checks
+
+- Subscribe using the production origin plus `/calendar.ics`, or the corresponding
+  `webcal://` address.
+- Downloading an `.ics` file imports a snapshot; it does not subscribe to updates.
+- The feed uses `Europe/London`, CRLF line endings and UTF-8-safe line folding.
+- Machine-readable event timestamps include the UK offset for evening meetings.
+- Calendar clients decide when to refresh. Test a subscription and downloaded
+  import in the actual client apps used by members before claiming compatibility.
+- Run `npm test`, `npm run typecheck` and `npm run build` after changes.
