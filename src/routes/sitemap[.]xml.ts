@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-// TODO: replace with your project URL once a project name or custom domain is set.
-const BASE_URL = "";
+function escapeXml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
 
 interface SitemapEntry {
   path: string;
@@ -14,7 +20,8 @@ interface SitemapEntry {
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
-      GET: async () => {
+      GET: async ({ request }) => {
+        const origin = new URL(request.url).origin;
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/meetings", changefreq: "weekly", priority: "0.9" },
@@ -25,7 +32,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const urls = entries.map((e) =>
           [
             `  <url>`,
-            `    <loc>${BASE_URL}${e.path}</loc>`,
+            `    <loc>${escapeXml(new URL(e.path, origin).href)}</loc>`,
             e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>` : null,
             e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
             e.priority ? `    <priority>${e.priority}</priority>` : null,
@@ -44,7 +51,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
         return new Response(xml, {
           headers: {
-            "Content-Type": "application/xml",
+            "Content-Type": "application/xml; charset=utf-8",
             "Cache-Control": "public, max-age=3600",
           },
         });

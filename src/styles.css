@@ -2,6 +2,14 @@
 @source "../src";
 @import "tw-animate-css";
 
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/montserrat-bold.ttf") format("truetype");
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /*
@@ -10,8 +18,7 @@
  * The @theme inline block maps CSS custom properties to Tailwind utility
  * classes (e.g. --color-primary -> bg-primary, text-primary).
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
+ * Functional tokens use oklch; brand tokens use the official hexadecimal values.
  *
  * To add a new semantic color:
  * 1. Add the variable to :root (light value) and .dark (dark value)
@@ -61,8 +68,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
-  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Montserrat", Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -76,27 +83,22 @@
   --card-foreground: oklch(0.25 0.02 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.25 0.02 240);
-  --primary: oklch(0.363 0.076 237.5);
+  --primary: #004165;
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.383 0.106 15.5);
+  --secondary: #772432;
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.968 0.004 220);
   --muted-foreground: oklch(0.45 0.015 235);
-  --accent: oklch(0.906 0.104 100);
+  --accent: #f2df74;
   --accent-foreground: oklch(0.28 0.03 240);
   --destructive: oklch(0.505 0.17 25);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.9 0.005 210);
-  --input: oklch(0.86 0.006 210);
+  --input: oklch(0.6 0.006 210);
   --ring: oklch(0.363 0.076 237.5);
   --surface: oklch(0.975 0.006 230);
   --surface-foreground: oklch(0.25 0.02 240);
-  --gradient-hero: linear-gradient(
-    135deg,
-    oklch(0.363 0.076 237.5) 0%,
-    oklch(0.28 0.06 240) 55%,
-    oklch(0.383 0.106 15.5) 100%
-  );
+  --gradient-hero: linear-gradient(90deg, #004165, #006094);
   --shadow-card: 0 1px 2px oklch(0.25 0.02 240 / 0.06), 0 8px 24px oklch(0.25 0.02 240 / 0.08);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -169,11 +171,6 @@
     font-weight: 700;
     letter-spacing: -0.01em;
   }
-
-  :focus-visible {
-    outline: 3px solid var(--color-accent);
-    outline-offset: 2px;
-  }
 }
 
 @utility hero-surface {
@@ -182,4 +179,36 @@
 
 @utility card-elevated {
   box-shadow: var(--shadow-card);
+}
+
+/* Keep focus visible on both white surfaces and the dark hero, including
+   controls whose utility classes normally remove the browser outline. */
+:focus-visible {
+  outline: 3px solid oklch(0.363 0.076 237.5);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px oklch(1 0 0);
+}
+
+html {
+  scroll-padding-top: 7rem;
+}
+
+body {
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+main :is(h1, h2, h3, [id], a, button, input, textarea, select) {
+  scroll-margin-top: 7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

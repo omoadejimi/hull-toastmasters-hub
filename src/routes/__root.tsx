@@ -6,11 +6,13 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { CLUB } from "@/data/club";
+import { socialMeta } from "@/lib/seo";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Toaster } from "@/components/ui/sonner";
@@ -37,11 +39,10 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    console.error("Page failed to load", error);
   }, [error]);
 
   return (
@@ -80,22 +81,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Hull Toastmasters | Public Speaking Club in Hull" },
+      { title: "Hull Speakers | Toastmasters Public Speaking Club in Hull" },
       {
         name: "description",
         content:
-          "Hull Toastmasters is a friendly public speaking and leadership club meeting twice a month in Hull. Guests always welcome.",
+          "Hull Speakers is a friendly public speaking and leadership club meeting twice a month in Hull. Guests always welcome.",
       },
-      { name: "author", content: "Hull Toastmasters" },
-      { property: "og:site_name", content: "Hull Toastmasters" },
-      { property: "og:title", content: "Hull Toastmasters | Public Speaking Club in Hull" },
+      { name: "author", content: "Hull Speakers" },
+      { property: "og:site_name", content: "Hull Speakers" },
+      {
+        property: "og:title",
+        content: "Hull Speakers | Toastmasters Public Speaking Club in Hull",
+      },
       {
         property: "og:description",
         content:
-          "Build confidence in speaking and leadership with Hull Toastmasters. Meetings twice a month, guests always welcome.",
+          "Build confidence in speaking and leadership with Hull Speakers. Meetings twice a month, guests always welcome.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      ...socialMeta("/"),
     ],
     links: [
       {
@@ -104,12 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap",
-      },
     ],
     scripts: [
       {
@@ -117,15 +115,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Hull Toastmasters",
+          name: "Hull Speakers",
           description:
             "Public speaking and leadership club in Hull, part of Toastmasters International.",
-          email: "hello@hulltoastmasters.org.uk",
+          email: CLUB.email,
           address: {
             "@type": "PostalAddress",
-            streetAddress: "Hull Central Library, Albion Street",
+            streetAddress: "Holiday Inn Express, 80 Ferensway",
             addressLocality: "Hull",
-            postalCode: "HU1 3TF",
+            postalCode: "HU2 8LN",
             addressCountry: "GB",
           },
         }),
@@ -157,6 +155,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <RouteFocus />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
@@ -165,7 +164,7 @@ function RootComponent() {
       </a>
       <div className="flex min-h-dvh flex-col">
         <SiteHeader />
-        <main id="main" className="flex-1">
+        <main id="main" tabIndex={-1} className="flex-1">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
@@ -174,4 +173,16 @@ function RootComponent() {
       <Toaster />
     </QueryClientProvider>
   );
+}
+
+function RouteFocus() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const previous = useRef(pathname);
+  useEffect(() => {
+    if (previous.current !== pathname) {
+      document.getElementById("main")?.focus();
+      previous.current = pathname;
+    }
+  }, [pathname]);
+  return null;
 }
