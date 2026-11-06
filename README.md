@@ -1,29 +1,65 @@
-# Welcome to your Lovable project
+# Hull Speakers
 
-This project was built with [Lovable](https://lovable.dev).
+Accessible public website for Hull Speakers, a Toastmasters club in Hull. It includes meeting information, a generated calendar and email draft helpers for guest visits and enquiries.
 
-## Build with Lovable
+## Club information
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+The owner confirmed these details on 6 November 2026:
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Club:** Hull Speakers
+- **Venue:** Holiday Inn Express, 80 Ferensway, Hull HU2 8LN
+- **Email:** contact@hullspeakers.org
+- **Regular schedule in the existing club data:** second and fourth Tuesdays, 7–9pm, UK local time. Confirm cancellations and special arrangements with the club.
+
+Maintain club information and meeting overrides in `src/data/club.ts`. See [calendar maintenance](docs/updating-the-calendar.md).
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Use Node.js 22.12 or later (Node 24 is supported) and npm. This project uses React, TypeScript, TanStack Start, Vite, Tailwind CSS and Nitro.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm ci
 npm run dev
 ```
 
-## Built with
+The committed npm lockfile pins resolved dependencies. `.npmrc` disables automatic peer installation to avoid installing optional framework/devtools integrations that this application does not use. Core framework versions include targeted security patches. A scoped minimatch override addresses a development-tool advisory; recheck it when upgrading TypeScript ESLint.
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+## Checks
+
+```sh
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+For browser and automated accessibility checks, install Chromium with `npx playwright install chromium`, start the production server with `npm start`, then run `npm run test:a11y` in another terminal. `BASE_URL` overrides the default `http://127.0.0.1:3000`. These checks complement manual keyboard and screen reader testing; they do not certify WCAG conformance.
+
+## Production build
+
+```sh
+npm run build
+npm start
+```
+
+Nitro produces `.output/public` and `.output/server/index.mjs`. The standard Node server reads `PORT` (default 3000). The custom SSR entry, HTML error page, route boundaries and server-function CSRF protection are retained. Select another supported Nitro target with `NITRO_PRESET` when building; provider-specific deployment still needs validation. No deployment is performed by this repository's scripts.
+
+Set `VITE_SITE_URL` to the final public origin **before building** to enable absolute canonical and sharing URLs, for example by configuring it in the hosting dashboard. Canonical/share URL tags are omitted when no valid origin is set. The sitemap uses the request origin; the reverse proxy must supply the intended public request URL. No public domain is assumed.
+
+Only variables prefixed `VITE_` are exposed to the browser by Vite. Never put secrets in them. No API keys are required for the current site.
+
+## Email and privacy
+
+The forms validate locally and prepare an email draft. They do not submit to a backend, reserve a place or confirm delivery. The visitor must open an email app or copy the draft into their email service, review it and send it. Values are retained on the page; they are not stored in browser storage. Test the real mailbox and response process before advertising guaranteed contact or bookings.
+
+There are no embedded maps, analytics or remote font requests in the app. The optional map link opens an external service only when selected. Hosting infrastructure may keep normal access logs; review its privacy settings separately.
+
+## Brand and assets
+
+The unmodified Toastmasters International logo in `public/toastmasters-logo.png` was retrieved from [Toastmasters' official asset CDN](https://ccdn.toastmasters.org/medias/images/global/toastmasterslogo2x.png). It replaces an asset URL that depended on the previous host. Toastmasters trademarks and copyright notices remain in the footer. The existing hero photograph and favicon are retained. Montserrat Bold is hosted locally for headings, with its SIL Open Font License in `public/fonts/OFL.txt`; Arial provides the permitted system font for body copy. The exact primary palette, approved blue gradient and 72px minimum logo width follow the August 2026 brand manual.
+
+Consult the [official brand manual](https://content.toastmasters.org/image/upload/02330-001-0001-brand-manual.pdf) and [governing documents](https://www.toastmasters.org/GovDocs) before changing authorised logo artwork, colours or trademark notices.
+
+## Review status
+
+See [audit and validation](docs/audit.md) for fixes, evidence and outstanding manual checks. Changes are prepared on `improvement/accessibility-ux-branding` for a draft pull request. Merging and deployment require the owner's approval.

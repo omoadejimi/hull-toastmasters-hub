@@ -1,0 +1,24 @@
+{
+  "startedAt": "2026-11-06T17:19:01.823Z",
+  "finishedAt": "2026-11-06T17:19:23.784Z",
+  "browser": "Chromium",
+  "browserVersion": "141.0.7390.37",
+  "widths": [320, 768, 1440],
+  "wcagTags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"],
+  "summary": {
+    "checks": 63,
+    "passed": 63,
+    "failed": 0,
+    "axeScans": 26,
+    "axeViolations": 0,
+    "axeIncomplete": 11,
+    "runtimeErrors": 0
+  },
+  "limitations": [
+    "Automated rules and regression journeys do not establish full WCAG conformance.",
+    "Screen-reader announcements, real devices, operating-system email clients and mailbox delivery require manual verification.",
+    "No email app is opened, clipboard contents are stubbed, and no email is sent by these checks."
+  ],
+  "testOrigin": "http://localhost:3000 (local test configuration only)",
+  "sourceCommit": "0d8e4a1"
+}
