@@ -1,10 +1,11 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Maintainer guidance
+
+- Preserve TanStack Start routing, server rendering, error boundaries and CSRF protection.
+- Keep club details and the generated calendar in `src/data/club.ts`.
+- Use semantic HTML, associated form errors, visible focus and reduced-motion support.
+- Forms prepare email drafts; never claim delivery or a booking without a verified backend.
+- Run `npm ci`, `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`.
+- Run `npm run test:a11y` against a running production server for browser regression checks.
+- Do not rewrite published Git history. Use reviewable commits and a draft pull request.
+- Do not merge or deploy without the owner's explicit approval.
+- Preserve Toastmasters trademarks, authorised logo artwork and third-party licence notices.
