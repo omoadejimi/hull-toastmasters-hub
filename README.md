@@ -35,16 +35,20 @@ npm run build
 
 For browser and automated accessibility checks, install Chromium with `npx playwright install chromium`, start the production server with `npm start`, then run `npm run test:a11y` in another terminal. `BASE_URL` overrides the default `http://127.0.0.1:3000`. These checks complement manual keyboard and screen reader testing; they do not certify WCAG conformance.
 
-## Production build
+## Hosting on Vercel
+
+Import the GitHub repository into Vercel with `main` as the production branch and the repository root as the project directory. Use the TanStack Start preset, the default build settings and Node.js 24.x. Nitro builds the server function and static assets for Vercel. To verify the Vercel output locally, run `NITRO_PRESET=vercel npm run build` and check `.vercel/output/`.
+
+Set `VITE_SITE_URL` to the final public HTTPS origin in Vercel's Production environment before building to enable absolute canonical and sharing URLs. The sitemap uses the request origin.
+
+## Local production build
 
 ```sh
 npm run build
 npm start
 ```
 
-Nitro produces the public website files in `dist/` and the server in `dist/server/index.mjs`. The standard Node server reads `PORT` (default 3000). The custom SSR entry, HTML error page, route boundaries and server-function CSRF protection are retained. Select another supported Nitro target with `NITRO_PRESET` when building; provider-specific deployment still needs validation. No deployment is performed by this repository's scripts.
-
-Set `VITE_SITE_URL` to the final public origin **before building** to enable absolute canonical and sharing URLs, for example by configuring it in the hosting dashboard. Canonical/share URL tags are omitted when no valid origin is set. The sitemap uses the request origin; the reverse proxy must supply the intended public request URL. No public domain is assumed.
+Nitro produces `.output/public` and `.output/server/index.mjs` for a local Node build. The server reads `PORT` (default 3000). The custom SSR entry, HTML error page, route boundaries and server-function CSRF protection are retained.
 
 Only variables prefixed `VITE_` are exposed to the browser by Vite. Never put secrets in them. No API keys are required for the current site.
 
@@ -62,4 +66,4 @@ Consult the [official brand manual](https://content.toastmasters.org/image/uploa
 
 ## Review status
 
-See [audit and validation](docs/audit.md) for fixes, evidence and outstanding manual checks. Changes are prepared on `improvement/accessibility-ux-branding` for a draft pull request. Merging and deployment require the owner's approval.
+See [audit and validation](docs/audit.md) for the accessibility changes, evidence and outstanding manual checks.
