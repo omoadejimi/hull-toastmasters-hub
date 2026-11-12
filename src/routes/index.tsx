@@ -70,7 +70,7 @@ function Index() {
                 variant="secondary"
                 className="h-auto min-h-11 whitespace-normal text-center"
               >
-                <Link to="/meetings">Ask to visit a meeting</Link>
+                <Link to="/meetings">Join a meeting</Link>
               </Button>
               <Button
                 asChild
